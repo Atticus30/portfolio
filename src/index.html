@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.min.js"
+      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="css/common.css" />
+    <script src="js/common.js"></script>
+
+    <!-- Choose the FontAwesome library you want to use from the list below. Comment-out the others -->
+
+    <script defer src="fontawesome/js/brands.js"></script>
+    <script defer src="fontawesome/js/duotone.js"></script>
+    <script defer src="fontawesome/js/light.js"></script>
+    <script defer src="fontawesome/js/regular.js"></script>
+    <script defer src="fontawesome/js/sharp-regular.js"></script>
+    <script defer src="fontawesome/js/sharp-solid.js"></script>
+    <script defer src="fontawesome/js/solid.js"></script>
+    <script defer src="fontawesome/js/thin.js"></script>
+
+    <!-- Keep the FontAwesome file below. -->
+
+    <script defer src="fontawesome/js/fontawesome.js"></script>
+
+    <title>Template</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      @font-face {
+        font-family: "HelveticaBlack";
+        src: url("fonts/HelveticaNeue/HelveticaNeueLTStd-Blk.otf")
+          format("opentype");
+      }
+
+      @font-face {
+        font-family: "RobotoFlex";
+        src: url("fonts/Roboto_Flex/RobotoFlex-VariableFont_GRAD\,XTRA\,YOPQ\,YTAS\,YTDE\,YTFI\,YTLC\,YTUC\,opsz\,slnt\,wdth\,wght.ttf")
+          format("truetype");
+      }
+
+      .landingPage {
+        width: var(--fullWidth);
+        height: var(--fullHeight);
+        background-color: rgb(96, 96, 96);
+        display: grid;
+        grid-template-columns: 10% 1fr 10%;
+        grid-template-rows: 10% 1fr 10%;
+        align-items: center;
+        justify-items: center;
+        position: relative;
+      }
+
+      .landingPageCenter {
+        width: 100%;
+        height: 100%;
+        grid-row: 2/3;
+        grid-column: 2/3;
+        position: absolute;
+      }
+
+      .section {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        position: absolute;
+      }
+
+      .sectionDpDesigns {
+        font-family: RobotoFlex;
+        letter-spacing: 5px;
+        font-weight: 200;
+        font-size: 100px;
+        color: rgb(255, 255, 255);
+        text-decoration: underline;
+        text-decoration-thickness: 3px;
+        text-underline-offset: 10px;
+        transition: transform 1.5s ease-in-out;
+        display: grid;
+        grid-template-columns: 1;
+        grid-template-rows: 1;
+        align-items: center;
+        justify-items: center;
+        background-color: darkslategray;
+        z-index: 100;
+      }
+
+      .dpDesignsLogo {
+      }
+
+      .dpDesignsLogo:hover {
+        transform: scale(200%);
+        text-transform: uppercase;
+      }
+
+      .sectionPortfolio {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        gap: 20px;
+        background-color: yellow;
+        z-index: 99;
+      }
+
+      .sectionImageOfMe {
+        background-color: salmon;
+        z-index: 99;
+      }
+
+      .sectionAboutMe {
+        background-color: dodgerblue;
+        z-index: 99;
+      }
+
+      .chevrons {
+        font-size: 80px;
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="landingPage" class="landingPage">
+      <div id="landingPageCenter" class="landingPageCenter">
+        <div id="sectionDpDesigns" class="section sectionDpDesigns">
+          <div class="dpDesignsLogo">dpdesigns</div>
+        </div>
+        <div id="sectionPortfolio" class="section sectionPortfolio"></div>
+        <div id="sectionImageOfMe" class="section sectionImageOfMe"></div>
+        <div id="sectionAboutMe" class="section sectionAboutMe"></div>
+      </div>
+      <div id="faBottom" style="grid-row: 3; grid-column: 2" class="chevrons">
+        <i class="fa-sharp fa-light">&#xf322;</i>
+      </div>
+      <div id="faLeft" style="grid-row: 2; grid-column: 1" class="chevrons">
+        <i class="fa-sharp fa-light">&#xf323;</i>
+      </div>
+      <div id="faRight" style="grid-row: 2; grid-column: 3" class="chevrons">
+        <i class="fa-sharp fa-light">&#xf324;</i>
+      </div>
+      <div id="faTop" style="grid-row: 1; grid-column: 2" class="chevrons">
+        <i class="fa-sharp fa-light">&#xf325;</i>
+      </div>
+    </div>
+    <script>
+      let elementLandingPage;
+      let elementLandingPageBox;
+
+      let elementFaRight;
+      let elementFaLeft;
+      let elementFaTop;
+      let elementFaBottom;
+      let elementSectionDpDesigns;
+      let elementSectionPortfolio;
+      let elementSectionImageOfMe;
+      let elementSectionAboutMe;
+
+      window.onload = function () {
+        elementLandingPage = document.getElementById("landingPage");
+        elementLandingPageBox = document.getElementById("landingPageBox");
+
+        elementSectionDpDesigns = document.getElementById("sectionDpDesigns");
+        elementSectionPortfolio = document.getElementById("sectionPortfolio");
+        elementSectionImageOfMe = document.getElementById("sectionImageOfMe");
+        elementSectionAboutMe = document.getElementById("sectionAboutMe");
+
+        elementFaRight = document.getElementById("faRight");
+        elementFaLeft = document.getElementById("faLeft");
+        elementFaTop = document.getElementById("faTop");
+        elementFaBottom = document.getElementById("faBottom");
+
+        elementFaBottom.addEventListener("click", clickBottom);
+        elementFaTop.addEventListener("click", clickTop);
+        elementFaLeft.addEventListener("click", clickLeft);
+        elementFaRight.addEventListener("click", clickRight);
+      };
+
+      function clickBottom() {
+        moveTop(elementSectionPortfolio);
+      }
+      function clickRight() {
+        moveTop(elementSectionImageOfMe);
+      }
+      function clickLeft() {
+        moveTop(elementSectionAboutMe);
+      }
+      function clickTop() {
+        moveTop(elementSectionDpDesigns);
+      }
+
+      function moveTop(sectionName) {
+        if (sectionName.style.zIndex == 100) {
+          sectionName.style.zIndex = 99;
+          elementSectionDpDesigns.style.zIndex = 100;
+        } else {
+          let sections = document.getElementsByClassName("section");
+          let sectionsArray = Array.from(sections);
+          sectionsArray.forEach((section) => {
+            section.style.zIndex = 99;
+          });
+          sectionName.style.zIndex = 100;
+        }
+      }
+    </script>
+  </body>
+</html>
