@@ -1,214 +1,637 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      src="https://code.jquery.com/jquery-3.6.3.min.js"
-      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
-      crossorigin="anonymous"
-    ></script>
-    <link rel="stylesheet" href="css/common.css" />
-    <script src="js/common.js"></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dennis Patty — IT Professional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
 
-    <!-- Choose the FontAwesome library you want to use from the list below. Comment-out the others -->
+  <style>
+    :root {
+      --bg: #080808;
+      --surface: #111111;
+      --surface2: #0d0d0d;
+      --border: rgba(255,255,255,0.06);
+      --text: #e8e4dc;
+      --muted: rgba(232,228,220,0.38);
+      --accent: #c8b89a;
+      --accent-dim: rgba(200,184,154,0.10);
+    }
 
-    <script defer src="fontawesome/js/brands.js"></script>
-    <script defer src="fontawesome/js/duotone.js"></script>
-    <script defer src="fontawesome/js/light.js"></script>
-    <script defer src="fontawesome/js/regular.js"></script>
-    <script defer src="fontawesome/js/sharp-regular.js"></script>
-    <script defer src="fontawesome/js/sharp-solid.js"></script>
-    <script defer src="fontawesome/js/solid.js"></script>
-    <script defer src="fontawesome/js/thin.js"></script>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <!-- Keep the FontAwesome file below. -->
+    html {
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+      scroll-behavior: smooth;
+    }
 
-    <script defer src="fontawesome/js/fontawesome.js"></script>
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      cursor: none;
+    }
 
-    <title>Template</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-      }
+    /* Cursor */
+    .cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width 0.25s ease, height 0.25s ease;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(200,184,154,0.45);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%,-50%);
+    }
+    body:has(a:hover) .cursor, body:has(button:hover) .cursor { width: 14px; height: 14px; }
 
-      @font-face {
-        font-family: "HelveticaBlack";
-        src: url("fonts/HelveticaNeue/HelveticaNeueLTStd-Blk.otf")
-          format("opentype");
-      }
+    /* Noise */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1000; opacity: 0.6;
+    }
 
-      @font-face {
-        font-family: "RobotoFlex";
-        src: url("fonts/Roboto_Flex/RobotoFlex-VariableFont_GRAD\,XTRA\,YOPQ\,YTAS\,YTDE\,YTFI\,YTLC\,YTUC\,opsz\,slnt\,wdth\,wght.ttf")
-          format("truetype");
-      }
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 500;
+      display: flex; justify-content: center; align-items: center;
+      padding: 2rem 0;
+    }
+    nav::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100%;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.95) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; position: relative; }
+    .nav-links a {
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.3s; position: relative; padding-bottom: 4px;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px; background: var(--accent); transition: width 0.35s ease;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
 
-      .landingPage {
-        width: var(--fullWidth);
-        height: var(--fullHeight);
-        background-color: rgb(96, 96, 96);
-        display: grid;
-        grid-template-columns: 10% 1fr 10%;
-        grid-template-rows: 10% 1fr 10%;
-        align-items: center;
-        justify-items: center;
-        position: relative;
-      }
+    /* Side dots */
+    .side-index {
+      position: fixed; right: 2.5rem; top: 50%; transform: translateY(-50%);
+      z-index: 500; display: flex; flex-direction: column; gap: 0.9rem; align-items: center;
+    }
+    .side-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--border); border: 1px solid rgba(200,184,154,0.25);
+      transition: background 0.35s ease, transform 0.35s ease; cursor: pointer;
+    }
+    .side-dot.active { background: var(--accent); transform: scale(1.6); border-color: transparent; }
 
-      .landingPageCenter {
-        width: 100%;
-        height: 100%;
-        grid-row: 2/3;
-        grid-column: 2/3;
-        position: absolute;
-      }
+    /* Sections */
+    section {
+      scroll-snap-align: start; height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
 
-      .section {
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        position: absolute;
-      }
+    /* Frame */
+    .line-h { position: absolute; left: 4rem; right: 4rem; height: 1px; background: var(--border); }
+    .line-h.top { top: 3.5rem; } .line-h.bottom { bottom: 3.5rem; }
+    .line-v { position: absolute; top: 3.5rem; bottom: 3.5rem; width: 1px; background: var(--border); }
+    .line-v.left { left: 4rem; } .line-v.right { right: 4rem; }
+    .corner {
+      position: absolute; font-size: 0.55rem; letter-spacing: 0.2em;
+      color: rgba(232,228,220,0.18); text-transform: uppercase;
+    }
+    .corner.tl { top: 4.5rem; left: 4.8rem; } .corner.br { bottom: 4.5rem; right: 4.8rem; }
 
-      .sectionDpDesigns {
-        font-family: RobotoFlex;
-        letter-spacing: 5px;
-        font-weight: 200;
-        font-size: 100px;
-        color: rgb(255, 255, 255);
-        text-decoration: underline;
-        text-decoration-thickness: 3px;
-        text-underline-offset: 10px;
-        transition: transform 1.5s ease-in-out;
-        display: grid;
-        grid-template-columns: 1;
-        grid-template-rows: 1;
-        align-items: center;
-        justify-items: center;
-        background-color: darkslategray;
-        z-index: 100;
-      }
+    .glow {
+      position: absolute; border-radius: 50%;
+      filter: blur(120px); pointer-events: none; z-index: 0;
+    }
+    .glow-amber {
+      width: 500px; height: 500px; background: rgba(200,184,154,0.04);
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+    }
+    .glow-sm { width: 220px; height: 220px; background: rgba(200,184,154,0.06); }
 
-      .dpDesignsLogo {
-      }
+    /* ─── HERO ─── */
+    #hero { background: var(--bg); }
+    .hero-inner { text-align: center; position: relative; z-index: 2; }
+    .hero-eyebrow {
+      font-size: 0.65rem; letter-spacing: 0.35em; color: var(--accent);
+      text-transform: uppercase; margin-bottom: 2rem;
+      opacity: 0; animation: fadeUp 1s 0.3s forwards;
+    }
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(4.5rem, 11vw, 10rem); line-height: 0.92; letter-spacing: -0.02em;
+      color: var(--text); opacity: 0; animation: fadeUp 1s 0.55s forwards;
+    }
+    .hero-name em { font-style: italic; color: var(--accent); }
+    .hero-sub {
+      margin-top: 2.5rem; font-size: 0.68rem; letter-spacing: 0.25em;
+      color: var(--muted); text-transform: uppercase;
+      opacity: 0; animation: fadeUp 1s 0.8s forwards;
+    }
+    .hero-scroll {
+      position: absolute; bottom: 4.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+      opacity: 0; animation: fadeUp 1s 1.1s forwards;
+    }
+    .hero-scroll span { font-size: 0.6rem; letter-spacing: 0.3em; color: var(--muted); text-transform: uppercase; }
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
 
-      .dpDesignsLogo:hover {
-        transform: scale(200%);
-        text-transform: uppercase;
-      }
+    /* ─── ABOUT ─── */
+    #about { background: var(--surface); }
+    .about-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; max-width: 900px; width: 90%; z-index: 2; }
+    .about-label { font-size: 0.65rem; letter-spacing: 0.3em; color: var(--accent); text-transform: uppercase; padding-top: 0.4rem; }
+    .about-heading {
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+      font-weight: 300; line-height: 1.15; margin-bottom: 1.8rem; color: var(--text);
+    }
+    .about-heading em { font-style: italic; color: var(--accent); }
+    .about-body { font-size: 0.72rem; line-height: 2; color: var(--muted); margin-bottom: 2rem; }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 0.4rem 0.9rem; border: 1px solid var(--border); color: var(--muted);
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .tag:hover { border-color: var(--accent); color: var(--accent); }
 
-      .sectionPortfolio {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        gap: 20px;
-        background-color: yellow;
-        z-index: 99;
-      }
+    /* ─── RESUME ─── */
+    #resume { background: var(--bg); }
 
-      .sectionImageOfMe {
-        background-color: salmon;
-        z-index: 99;
-      }
+    .resume-wrapper {
+      width: 90%; max-width: 1050px;
+      height: calc(100vh - 9rem);
+      z-index: 2; display: flex; flex-direction: column;
+    }
+    .resume-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      padding-bottom: 1.4rem; border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .resume-header .section-label { font-size: 0.62rem; letter-spacing: 0.3em; color: var(--accent); text-transform: uppercase; margin-bottom: 0.4rem; }
+    .resume-header h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3.5vw, 3rem); font-weight: 300; color: var(--text); line-height: 1; }
+    .resume-dl {
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--border);
+      padding-bottom: 3px; transition: color 0.3s, border-color 0.3s; flex-shrink: 0;
+    }
+    .resume-dl:hover { color: var(--accent); border-color: var(--accent); }
 
-      .sectionAboutMe {
-        background-color: dodgerblue;
-        z-index: 99;
-      }
+    .resume-body {
+      flex: 1; overflow-y: auto; padding: 1.5rem 0.25rem 2rem 0;
+      scrollbar-width: thin; scrollbar-color: rgba(200,184,154,0.2) transparent;
+    }
+    .resume-body::-webkit-scrollbar { width: 3px; }
+    .resume-body::-webkit-scrollbar-thumb { background: rgba(200,184,154,0.25); border-radius: 2px; }
 
-      .chevrons {
-        font-size: 80px;
-        color: white;
-      }
-    </style>
-  </head>
+    .resume-cols { display: grid; grid-template-columns: 1fr 1.7fr; gap: 3.5rem; }
 
-  <body>
-    <div id="landingPage" class="landingPage">
-      <div id="landingPageCenter" class="landingPageCenter">
-        <div id="sectionDpDesigns" class="section sectionDpDesigns">
-          <div class="dpDesignsLogo">dpdesigns</div>
+    .r-block { margin-bottom: 2.2rem; }
+    .r-block-title {
+      font-size: 0.58rem; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+    }
+
+    .edu-item { margin-bottom: 1.2rem; }
+    .edu-school { font-size: 0.7rem; color: var(--text); margin-bottom: 0.2rem; }
+    .edu-degree { font-size: 0.63rem; color: var(--accent); margin-bottom: 0.15rem; }
+    .edu-date { font-size: 0.57rem; letter-spacing: 0.1em; color: var(--muted); }
+
+    .sg { margin-bottom: 1rem; }
+    .sg-name { font-size: 0.57rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.45rem; }
+    .sp { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .pill {
+      font-size: 0.57rem; letter-spacing: 0.06em; padding: 0.28rem 0.65rem;
+      border: 1px solid var(--border); color: rgba(232,228,220,0.5);
+      transition: border-color 0.25s, color 0.25s;
+    }
+    .pill:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Timeline */
+    .timeline { position: relative; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: 8px; bottom: 0;
+      width: 1px; background: var(--border);
+    }
+    .tl-item { padding-left: 1.8rem; padding-bottom: 2rem; position: relative; }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-dot {
+      position: absolute; left: -4px; top: 7px;
+      width: 9px; height: 9px; border-radius: 50%;
+      border: 1px solid var(--accent); background: var(--bg);
+      transition: background 0.3s;
+    }
+    .tl-item:hover .tl-dot { background: var(--accent); }
+    .tl-meta { font-size: 0.57rem; letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; margin-bottom: 0.25rem; }
+    .tl-role { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 400; color: var(--text); margin-bottom: 0.12rem; line-height: 1.2; }
+    .tl-company { font-size: 0.62rem; color: var(--muted); margin-bottom: 0.7rem; letter-spacing: 0.04em; }
+    .tl-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .tl-list li { font-size: 0.63rem; line-height: 1.75; color: var(--muted); padding-left: 1rem; position: relative; }
+    .tl-list li::before { content: '—'; position: absolute; left: 0; color: rgba(200,184,154,0.3); }
+
+    /* ─── PROJECTS ─── */
+    #work { background: var(--surface); }
+    .work-inner { max-width: 1000px; width: 90%; z-index: 2; }
+    .section-label { font-size: 0.65rem; letter-spacing: 0.3em; color: var(--accent); text-transform: uppercase; margin-bottom: 3rem; }
+    .work-list { list-style: none; }
+    .work-item {
+      display: grid; grid-template-columns: 3rem 1fr auto;
+      align-items: center; gap: 2rem; padding: 2rem 0;
+      border-bottom: 1px solid var(--border); position: relative; cursor: pointer;
+    }
+    .work-item::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--accent-dim); opacity: 0; transition: opacity 0.35s; pointer-events: none;
+    }
+    .work-item:hover::before { opacity: 1; }
+    .work-num { font-size: 0.6rem; letter-spacing: 0.15em; color: var(--muted); }
+    .work-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.4rem, 3vw, 2.1rem); font-weight: 300; color: var(--text); transition: color 0.3s; }
+    .work-item:hover .work-title { color: var(--accent); }
+    .work-meta { font-size: 0.6rem; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; text-align: right; }
+    .work-arrow { position: absolute; right: 0; font-size: 1rem; color: var(--accent); opacity: 0; transform: translateX(-10px); transition: opacity 0.3s, transform 0.3s; }
+    .work-item:hover .work-arrow { opacity: 1; transform: translateX(0); }
+
+    /* ─── CONTACT ─── */
+    #contact { background: var(--surface2); }
+    .contact-inner { text-align: center; z-index: 2; max-width: 700px; width: 90%; }
+    .contact-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(3.5rem, 9vw, 7.5rem); font-weight: 300; line-height: 0.95; margin-bottom: 2.5rem; color: var(--text); }
+    .contact-heading em { font-style: italic; color: var(--accent); }
+    .contact-sub { font-size: 0.7rem; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 3rem; line-height: 2; }
+    .contact-links { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
+    .contact-link {
+      font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      padding-bottom: 4px; border-bottom: 1px solid var(--border);
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .contact-link:hover { color: var(--accent); border-color: var(--accent); }
+    .cta-btn {
+      display: inline-block; margin-top: 2.5rem;
+      font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--bg); background: var(--accent);
+      border: none; padding: 1.1rem 3rem; cursor: pointer;
+      transition: background 0.3s, transform 0.2s; text-decoration: none;
+    }
+    .cta-btn:hover { background: var(--text); transform: translateY(-2px); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; } 50% { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .resume-cols { grid-template-columns: 1fr; gap: 2rem; }
+      .about-grid  { grid-template-columns: 1fr; gap: 2rem; }
+      .work-item   { grid-template-columns: 2rem 1fr; }
+      .work-meta   { display: none; }
+    }
+    @media (max-width: 640px) {
+      .side-index { display: none; }
+      .line-h { left: 1.5rem; right: 1.5rem; }
+      .line-v, .corner { display: none; }
+      .nav-links { gap: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <nav>
+    <ul class="nav-links">
+      <li><a href="#hero"    class="active" data-section="hero">Home</a></li>
+      <li><a href="#about"   data-section="about">About</a></li>
+      <li><a href="#resume"  data-section="resume">Resume</a></li>
+      <li><a href="#work"    data-section="work">Projects</a></li>
+      <li><a href="#contact" data-section="contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="side-index" id="sideIndex">
+    <div class="side-dot active" data-target="hero"></div>
+    <div class="side-dot" data-target="about"></div>
+    <div class="side-dot" data-target="resume"></div>
+    <div class="side-dot" data-target="work"></div>
+    <div class="side-dot" data-target="contact"></div>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="glow glow-amber"></div>
+    <div class="line-h top"></div><div class="line-h bottom"></div>
+    <div class="line-v left"></div><div class="line-v right"></div>
+    <span class="corner tl">20+ Years Experience</span>
+    <span class="corner br">Bakersfield, CA</span>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">IT Professional · Systems Architect · Web Designer</p>
+      <h1 class="hero-name">Dennis<br/><em>Patty</em></h1>
+      <p class="hero-sub">Infrastructure · Security · Leadership · AI</p>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="glow glow-sm" style="top:20%;right:10%;"></div>
+    <div class="line-h top"></div><div class="line-h bottom"></div>
+    <div class="line-v left"></div><div class="line-v right"></div>
+    <span class="corner tl">01 / About</span>
+    <div class="about-grid">
+      <div><p class="about-label">About</p></div>
+      <div>
+        <h2 class="about-heading">Two decades of<br/><em>solving</em> what<br/>others can't</h2>
+        <p class="about-body">
+          An Information Technology Professional with over 20 years of experience across healthcare, government, and enterprise environments. Deep expertise in Microsoft ecosystems — Exchange, Windows Server, Active Directory — paired with a sharp eye for security, compliance, and emerging AI technologies.
+          <br/><br/>
+          I thrive on complex, multi-layered problems. Whether leading a hospital's full IT build-out, managing statewide prison infrastructure, or driving Cisco telephony rollouts — I get things done on time and on standard.
+        </p>
+        <div class="about-tags">
+          <span class="tag">Systems Admin</span>
+          <span class="tag">Active Directory</span>
+          <span class="tag">Network Security</span>
+          <span class="tag">AI &amp; Automation</span>
+          <span class="tag">Project Management</span>
+          <span class="tag">Graphic Design</span>
+          <span class="tag">Web Dev</span>
         </div>
-        <div id="sectionPortfolio" class="section sectionPortfolio"></div>
-        <div id="sectionImageOfMe" class="section sectionImageOfMe"></div>
-        <div id="sectionAboutMe" class="section sectionAboutMe"></div>
-      </div>
-      <div id="faBottom" style="grid-row: 3; grid-column: 2" class="chevrons">
-        <i class="fa-sharp fa-light">&#xf322;</i>
-      </div>
-      <div id="faLeft" style="grid-row: 2; grid-column: 1" class="chevrons">
-        <i class="fa-sharp fa-light">&#xf323;</i>
-      </div>
-      <div id="faRight" style="grid-row: 2; grid-column: 3" class="chevrons">
-        <i class="fa-sharp fa-light">&#xf324;</i>
-      </div>
-      <div id="faTop" style="grid-row: 1; grid-column: 2" class="chevrons">
-        <i class="fa-sharp fa-light">&#xf325;</i>
       </div>
     </div>
-    <script>
-      let elementLandingPage;
-      let elementLandingPageBox;
+  </section>
 
-      let elementFaRight;
-      let elementFaLeft;
-      let elementFaTop;
-      let elementFaBottom;
-      let elementSectionDpDesigns;
-      let elementSectionPortfolio;
-      let elementSectionImageOfMe;
-      let elementSectionAboutMe;
+  <!-- RESUME -->
+  <section id="resume">
+    <div class="line-h top"></div><div class="line-h bottom"></div>
+    <div class="line-v left"></div><div class="line-v right"></div>
+    <span class="corner tl">02 / Resume</span>
+    <span class="corner br">MCTS · PLMA Certified</span>
 
-      window.onload = function () {
-        elementLandingPage = document.getElementById("landingPage");
-        elementLandingPageBox = document.getElementById("landingPageBox");
+    <div class="resume-wrapper">
+      <div class="resume-header">
+        <div>
+          <p class="section-label">Curriculum Vitae</p>
+          <h2>Experience &amp; Skills</h2>
+        </div>
+        <a href="mailto:Dennis.patty@gmail.com" class="resume-dl">Request Full CV →</a>
+      </div>
 
-        elementSectionDpDesigns = document.getElementById("sectionDpDesigns");
-        elementSectionPortfolio = document.getElementById("sectionPortfolio");
-        elementSectionImageOfMe = document.getElementById("sectionImageOfMe");
-        elementSectionAboutMe = document.getElementById("sectionAboutMe");
+      <div class="resume-body">
+        <div class="resume-cols">
 
-        elementFaRight = document.getElementById("faRight");
-        elementFaLeft = document.getElementById("faLeft");
-        elementFaTop = document.getElementById("faTop");
-        elementFaBottom = document.getElementById("faBottom");
+          <!-- Left -->
+          <div>
+            <div class="r-block">
+              <p class="r-block-title">Education</p>
+              <div class="edu-item">
+                <p class="edu-school">Bakersfield College</p>
+                <p class="edu-degree">Certification — Graphic Design</p>
+                <p class="edu-date">Jun 2018</p>
+              </div>
+              <div class="edu-item">
+                <p class="edu-school">Bakersfield College</p>
+                <p class="edu-degree">A.S. — Computer Science</p>
+                <p class="edu-date">Aug 2007 – Present</p>
+              </div>
+            </div>
 
-        elementFaBottom.addEventListener("click", clickBottom);
-        elementFaTop.addEventListener("click", clickTop);
-        elementFaLeft.addEventListener("click", clickLeft);
-        elementFaRight.addEventListener("click", clickRight);
-      };
+            <div class="r-block">
+              <p class="r-block-title">Certifications</p>
+              <div class="sg">
+                <div class="sp">
+                  <span class="pill">MCTS (2012)</span>
+                  <span class="pill">PLMA — Project Mgmt</span>
+                </div>
+              </div>
+            </div>
 
-      function clickBottom() {
-        moveTop(elementSectionPortfolio);
-      }
-      function clickRight() {
-        moveTop(elementSectionImageOfMe);
-      }
-      function clickLeft() {
-        moveTop(elementSectionAboutMe);
-      }
-      function clickTop() {
-        moveTop(elementSectionDpDesigns);
-      }
+            <div class="r-block">
+              <p class="r-block-title">Technical Skills</p>
+              <div class="sg">
+                <p class="sg-name">Microsoft</p>
+                <div class="sp">
+                  <span class="pill">Active Directory</span><span class="pill">Exchange</span>
+                  <span class="pill">Windows Server</span><span class="pill">Copilot</span><span class="pill">Azure</span>
+                </div>
+              </div>
+              <div class="sg">
+                <p class="sg-name">Networking</p>
+                <div class="sp">
+                  <span class="pill">Cisco</span><span class="pill">Aruba</span>
+                  <span class="pill">VLANs</span><span class="pill">IP Telephony</span>
+                </div>
+              </div>
+              <div class="sg">
+                <p class="sg-name">AI &amp; Development</p>
+                <div class="sp">
+                  <span class="pill">Claude</span><span class="pill">ChatGPT</span><span class="pill">Gemini</span>
+                  <span class="pill">n8n</span><span class="pill">Google Cloud</span>
+                  <span class="pill">VS Code</span><span class="pill">HTML/CSS/JS</span>
+                </div>
+              </div>
+              <div class="sg">
+                <p class="sg-name">Creative</p>
+                <div class="sp">
+                  <span class="pill">Photoshop</span><span class="pill">Illustrator</span><span class="pill">Premiere Pro</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      function moveTop(sectionName) {
-        if (sectionName.style.zIndex == 100) {
-          sectionName.style.zIndex = 99;
-          elementSectionDpDesigns.style.zIndex = 100;
-        } else {
-          let sections = document.getElementsByClassName("section");
-          let sectionsArray = Array.from(sections);
-          sectionsArray.forEach((section) => {
-            section.style.zIndex = 99;
-          });
-          sectionName.style.zIndex = 100;
-        }
-      }
-    </script>
-  </body>
+          <!-- Right: Timeline -->
+          <div>
+            <div class="timeline">
+
+              <div class="tl-item">
+                <div class="tl-dot"></div>
+                <p class="tl-meta">Feb 2024 – Present</p>
+                <p class="tl-role">IT Specialist II</p>
+                <p class="tl-company">California State Prison – Los Angeles County &nbsp;·&nbsp; Sacramento, CA</p>
+                <ul class="tl-list">
+                  <li>Transferred post-closure; managing Customer Field Operations Project portfolio across institutions.</li>
+                  <li>Primary POC for HQ teams needing institutional data and coordination from any site.</li>
+                  <li>Testing hardware and software updates from HQ ahead of statewide deployment.</li>
+                  <li>Completed California PLMA (Project Management Leadership Academy) certification.</li>
+                  <li>Active in AI groups — driving AI-powered solutions into government IT operations.</li>
+                </ul>
+              </div>
+
+              <div class="tl-item">
+                <div class="tl-dot"></div>
+                <p class="tl-meta">Oct 2022 – Feb 2024</p>
+                <p class="tl-role">IT Supervisor II</p>
+                <p class="tl-company">California City State Prison &nbsp;·&nbsp; Sacramento, CA</p>
+                <ul class="tl-list">
+                  <li>Deployed 500+ education laptops for inmates — more than any other prison in the state, with 2-person staff.</li>
+                  <li>Managed full Microsoft environment: Active Directory, OS, print servers, mobile devices.</li>
+                  <li>Led IT infrastructure wind-down during the full closure of the facility.</li>
+                  <li>Supervised staff hiring, performance management, and all department communications to Sacramento HQ.</li>
+                </ul>
+              </div>
+
+              <div class="tl-item">
+                <div class="tl-dot"></div>
+                <p class="tl-meta">Jan 2016 – Oct 2022</p>
+                <p class="tl-role">IT Network Analyst</p>
+                <p class="tl-company">Adventist Health West &nbsp;·&nbsp; Sacramento, CA</p>
+                <ul class="tl-list">
+                  <li>Led full IT design and build-out of Adventist Health Tehachapi — the first hospital under the system's new standards initiative.</li>
+                  <li>Managed Cerner EHR rollout and staff retraining across all departments; served as Team Lead.</li>
+                  <li>Oversaw Cisco IP telephony infrastructure and 3rd-party installation teams.</li>
+                  <li>Led telemedicine adoption project at Bakersfield — cost, timeline, and stakeholder communications.</li>
+                  <li>Directed cross-campus office moves, multi-clinic buildouts, and department-wide IT needs at scale.</li>
+                </ul>
+              </div>
+
+              <div class="tl-item">
+                <div class="tl-dot"></div>
+                <p class="tl-meta">Jun 2005 – 2016</p>
+                <p class="tl-role">IT Tech / IT Lead</p>
+                <p class="tl-company">Tehachapi Valley Healthcare District &nbsp;·&nbsp; Tehachapi, CA</p>
+                <ul class="tl-list">
+                  <li>Built the hospital's entire IT infrastructure from zero — domain, network, security, and state-compliant backup systems.</li>
+                  <li>Migrated from Windows XP to Windows 7; resolved legacy app compatibility via virtualization.</li>
+                  <li>Deployed Aruba wireless, responded to and resolved SSID/IP flooding security incident.</li>
+                  <li>Managed physical security: Lorex IP cameras and Schlage proximity card locks across 15+ doors.</li>
+                  <li>Led EHR transition from legacy Unix system (Mardon) to Healthland on Windows; introduced Zendesk ticketing.</li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="work">
+    <div class="line-h top"></div><div class="line-h bottom"></div>
+    <div class="line-v left"></div><div class="line-v right"></div>
+    <span class="corner tl">03 / Projects</span>
+    <div class="work-inner">
+      <p class="section-label">Key Initiatives</p>
+      <ul class="work-list">
+        <li class="work-item">
+          <span class="work-num">01</span>
+          <span class="work-title">Hospital Infrastructure Build</span>
+          <span class="work-meta">Healthcare IT<br/>2005–2008</span>
+          <span class="work-arrow">→</span>
+        </li>
+        <li class="work-item">
+          <span class="work-num">02</span>
+          <span class="work-title">Adventist Health Tehachapi Launch</span>
+          <span class="work-meta">New Facility<br/>2018</span>
+          <span class="work-arrow">→</span>
+        </li>
+        <li class="work-item">
+          <span class="work-num">03</span>
+          <span class="work-title">500+ Inmate Laptop Deployment</span>
+          <span class="work-meta">State Prison<br/>2022–2023</span>
+          <span class="work-arrow">→</span>
+        </li>
+        <li class="work-item">
+          <span class="work-num">04</span>
+          <span class="work-title">AI Workflow Automation</span>
+          <span class="work-meta">Self-Led<br/>2023–Present</span>
+          <span class="work-arrow">→</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="glow glow-sm" style="bottom:20%;left:15%;"></div>
+    <div class="line-h top"></div><div class="line-h bottom"></div>
+    <div class="line-v left"></div><div class="line-v right"></div>
+    <span class="corner tl">04 / Contact</span>
+    <span class="corner br">© 2024 Dennis Patty</span>
+    <div class="contact-inner">
+      <h2 class="contact-heading">Let's<br/><em>connect</em></h2>
+      <p class="contact-sub">
+        Open to new opportunities, consulting,<br/>
+        and complex IT challenges.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:Dennis.patty@gmail.com" class="contact-link">Email</a>
+        <a href="https://www.linkedin.com/in/dennispatty" target="_blank" class="contact-link">LinkedIn</a>
+
+      </div>
+      <a href="mailto:Dennis.patty@gmail.com" class="cta-btn">Get In Touch</a>
+    </div>
+  </section>
+
+  <script>
+    // Cursor
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursorRing');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove', e => {
+      mx=e.clientX; my=e.clientY;
+      cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+    });
+    (function loop(){
+      rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+      ring.style.left=rx+'px'; ring.style.top=ry+'px';
+      requestAnimationFrame(loop);
+    })();
+
+    // Nav + dots
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const sideDots = document.querySelectorAll('.side-dot');
+
+    function setActive(id){
+      navLinks.forEach(a=>a.classList.toggle('active', a.dataset.section===id));
+      sideDots.forEach(d=>d.classList.toggle('active', d.dataset.target===id));
+    }
+
+    const obs = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{ if(e.isIntersecting) setActive(e.target.id); });
+    }, {threshold:0.5});
+    sections.forEach(s=>obs.observe(s));
+
+    sideDots.forEach(dot=>{
+      dot.addEventListener('click',()=>{
+        document.getElementById(dot.dataset.target)?.scrollIntoView({behavior:'smooth'});
+      });
+    });
+
+    // Prevent resume inner scroll from snapping the page
+    const rb = document.querySelector('.resume-body');
+    if(rb) rb.addEventListener('wheel', e=>e.stopPropagation(), {passive:true});
+  </script>
+</body>
 </html>
