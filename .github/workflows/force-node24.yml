@@ -1,0 +1,46 @@
+name: CI (Force Node 24)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install dependencies
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+          fi
+
+      - name: Run lint (if present)
+        run: |
+          if [ -f package.json ] && npm run | grep -q lint; then
+            npm run lint
+          fi
+
+      - name: Run tests (if present)
+        run: |
+          if [ -f package.json ] && npm run | grep -q test; then
+            npm test
+          fi
+
+      - name: Run build (if present)
+        run: |
+          if [ -f package.json ] && npm run | grep -q build; then
+            npm run build
+          fi
