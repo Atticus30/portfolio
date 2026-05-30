@@ -326,9 +326,21 @@
     }
 
     @media (max-width: 768px) {
+      #about {
+        height: auto;
+        min-height: 100vh;
+        padding: 7rem 0 4rem;
+        align-items: flex-start;
+      }
       .resume-cols { grid-template-columns: 1fr; gap: 2rem; }
       .about-grid  { grid-template-columns: 1fr; gap: 2rem; }
-      .about-photo-wrap { max-width: 200px; margin: 0 auto; }
+      .about-photo-wrap {
+        max-width: 160px;
+        margin: 0 auto;
+      }
+      .about-photo-wrap::after { display: none; }
+      .about-photo { width: 100%; height: auto; }
+    }
       .work-item   { grid-template-columns: 2rem 1fr; }
       .work-meta   { display: none; }
     }
