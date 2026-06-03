@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dennis Patty — Curriculum Vitae</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1a1814;
+      --soft: #4a463e;
+      --faint: #8a8275;
+      --rule: #ddd8cd;
+      --accent: #9a7b3f;
+      --paper: #faf8f3;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #e7e3da;
+      color: var(--ink);
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      line-height: 1.6;
+      padding: 2.5rem 1rem;
+    }
+
+    /* Floating action bar (screen only) */
+    .toolbar {
+      position: fixed; top: 1.4rem; right: 1.4rem; z-index: 10;
+      display: flex; gap: 0.6rem;
+    }
+    .tb-btn {
+      font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em;
+      text-transform: uppercase; cursor: pointer; text-decoration: none;
+      padding: 0.7rem 1.3rem; border: 1px solid var(--ink); color: var(--ink);
+      background: transparent; transition: background 0.25s, color 0.25s;
+    }
+    .tb-btn.primary { background: var(--ink); color: var(--paper); }
+    .tb-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    .page {
+      max-width: 820px; margin: 0 auto; background: var(--paper);
+      padding: 4rem 4.5rem; box-shadow: 0 30px 80px rgba(0,0,0,0.18);
+    }
+
+    /* Header */
+    .cv-head { border-bottom: 2px solid var(--ink); padding-bottom: 1.6rem; margin-bottom: 2rem; }
+    .cv-name {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: 3.6rem; line-height: 0.95; letter-spacing: -0.01em;
+    }
+    .cv-name em { font-style: italic; color: var(--accent); }
+    .cv-title { font-size: 0.68rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent); margin-top: 0.8rem; }
+    .cv-contact { display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; margin-top: 1.2rem; font-size: 0.68rem; letter-spacing: 0.04em; color: var(--soft); }
+    .cv-contact a { color: var(--soft); text-decoration: none; border-bottom: 1px solid var(--rule); }
+    .cv-contact a:hover { color: var(--accent); }
+
+    .cv-summary { font-size: 0.82rem; line-height: 1.9; color: var(--soft); margin-bottom: 2.4rem; }
+
+    /* Sections */
+    .sec { margin-bottom: 2.2rem; }
+    .sec-title {
+      font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent);
+      padding-bottom: 0.5rem; margin-bottom: 1.2rem; border-bottom: 1px solid var(--rule);
+    }
+
+    .role { margin-bottom: 1.5rem; break-inside: avoid; }
+    .role-top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+    .role-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; line-height: 1.2; }
+    .role-date { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--faint); white-space: nowrap; }
+    .role-org { font-size: 0.72rem; color: var(--accent); margin: 0.15rem 0 0.6rem; }
+    .role ul { list-style: none; }
+    .role li { font-size: 0.76rem; line-height: 1.75; color: var(--soft); padding-left: 1.1rem; position: relative; margin-bottom: 0.2rem; }
+    .role li::before { content: '—'; position: absolute; left: 0; color: var(--accent); }
+
+    .cv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    .edu-item { margin-bottom: 1rem; }
+    .edu-school { font-size: 0.78rem; }
+    .edu-degree { font-size: 0.72rem; color: var(--accent); }
+    .edu-date { font-size: 0.64rem; color: var(--faint); }
+
+    .skill-group { margin-bottom: 0.9rem; }
+    .skill-label { font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); margin-bottom: 0.35rem; }
+    .skill-row { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .chip { font-size: 0.62rem; padding: 0.2rem 0.55rem; border: 1px solid var(--rule); color: var(--soft); }
+
+    @media (max-width: 680px) {
+      .page { padding: 2.5rem 1.6rem; }
+      .cv-name { font-size: 2.6rem; }
+      .cv-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .toolbar { position: static; justify-content: center; margin-bottom: 1.5rem; }
+    }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .toolbar { display: none; }
+      .page { box-shadow: none; max-width: none; padding: 1.4cm 1.6cm; background: #fff; }
+      .role, .sec { break-inside: avoid; }
+      @page { margin: 1cm; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <a href="Dennis Patty Portfolio.html" class="tb-btn">← Back</a>
+    <button class="tb-btn primary" onclick="window.print()">Download PDF</button>
+  </div>
+
+  <div class="page">
+    <header class="cv-head">
+      <h1 class="cv-name">Dennis <em>Patty</em></h1>
+      <p class="cv-title">IT Professional · Systems Architect · Web Designer</p>
+      <div class="cv-contact">
+        <a href="/cdn-cgi/l/email-protection#db9fbeb5b5b2a8f5abbaafafa29bbcb6bab2b7f5b8b4b6"><span class="__cf_email__" data-cfemail="3175545f5f58421f415045454871565c50585d1f525e5c">[email&#160;protected]</span></a>
+        <a href="https://www.linkedin.com/in/dennispatty" target="_blank">linkedin.com/in/dennispatty</a>
+        <span>Bakersfield, CA</span>
+      </div>
+    </header>
+
+    <p class="cv-summary">
+      Information Technology Professional with over 20 years of experience across healthcare, government, and enterprise environments. Deep expertise in Microsoft ecosystems — Exchange, Windows Server, Active Directory — paired with a sharp eye for security, compliance, and emerging AI technologies. Proven record leading full hospital IT build-outs, statewide prison infrastructure, and Cisco telephony rollouts on time and on standard.
+    </p>
+
+    <section class="sec">
+      <h2 class="sec-title">Experience</h2>
+
+      <div class="role">
+        <div class="role-top">
+          <span class="role-name">IT Specialist II</span>
+          <span class="role-date">Feb 2024 – Present</span>
+        </div>
+        <p class="role-org">California State Prison – Los Angeles County · Sacramento, CA</p>
+        <ul>
+          <li>Manage Customer Field Operations Project portfolio across institutions following post-closure transfer.</li>
+          <li>Primary point of contact for HQ teams needing institutional data and cross-site coordination.</li>
+          <li>Test hardware and software updates from HQ ahead of statewide deployment.</li>
+          <li>Completed California PLMA (Project Management Leadership Academy) certification.</li>
+          <li>Active in AI groups driving AI-powered solutions into government IT operations.</li>
+        </ul>
+      </div>
+
+      <div class="role">
+        <div class="role-top">
+          <span class="role-name">IT Supervisor II</span>
+          <span class="role-date">Oct 2022 – Feb 2024</span>
+        </div>
+        <p class="role-org">California City State Prison · Sacramento, CA</p>
+        <ul>
+          <li>Deployed 500+ education laptops for inmates — more than any other prison in the state, with a 2-person staff.</li>
+          <li>Managed full Microsoft environment: Active Directory, operating systems, print servers, mobile devices.</li>
+          <li>Led IT infrastructure wind-down during the full closure of the facility.</li>
+          <li>Supervised staff hiring, performance management, and all department communications to Sacramento HQ.</li>
+        </ul>
+      </div>
+
+      <div class="role">
+        <div class="role-top">
+          <span class="role-name">IT Network Analyst</span>
+          <span class="role-date">Jan 2016 – Oct 2022</span>
+        </div>
+        <p class="role-org">Adventist Health West · Sacramento, CA</p>
+        <ul>
+          <li>Led full IT design and build-out of Adventist Health Tehachapi — the first hospital under the system's new standards initiative.</li>
+          <li>Managed Cerner EHR rollout and staff retraining across all departments; served as Team Lead.</li>
+          <li>Oversaw Cisco IP telephony infrastructure and 3rd-party installation teams.</li>
+          <li>Led telemedicine adoption project at Bakersfield — cost, timeline, and stakeholder communications.</li>
+          <li>Directed cross-campus office moves, multi-clinic buildouts, and department-wide IT needs at scale.</li>
+        </ul>
+      </div>
+
+      <div class="role">
+        <div class="role-top">
+          <span class="role-name">IT Tech / IT Lead</span>
+          <span class="role-date">Jun 2005 – 2016</span>
+        </div>
+        <p class="role-org">Tehachapi Valley Healthcare District · Tehachapi, CA</p>
+        <ul>
+          <li>Built the hospital's entire IT infrastructure from zero — domain, network, security, and state-compliant backup systems.</li>
+          <li>Migrated from Windows XP to Windows 7; resolved legacy app compatibility via virtualization.</li>
+          <li>Deployed Aruba wireless; responded to and resolved an SSID/IP flooding security incident.</li>
+          <li>Managed physical security: Lorex IP cameras and Schlage proximity card locks across 15+ doors.</li>
+          <li>Led EHR transition from legacy Unix system (Mardon) to Healthland on Windows; introduced Zendesk ticketing.</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="cv-grid">
+      <section class="sec">
+        <h2 class="sec-title">Education</h2>
+        <div class="edu-item">
+          <p class="edu-school">Bakersfield College</p>
+          <p class="edu-degree">Certification — Graphic Design</p>
+          <p class="edu-date">Jun 2018</p>
+        </div>
+        <div class="edu-item">
+          <p class="edu-school">Bakersfield College</p>
+          <p class="edu-degree">A.S. — Computer Science</p>
+          <p class="edu-date">Aug 2007 – Present</p>
+        </div>
+        <h2 class="sec-title" style="margin-top:1.6rem">Certifications</h2>
+        <div class="skill-row">
+          <span class="chip">MCTS (2012)</span>
+          <span class="chip">PLMA — Project Mgmt</span>
+        </div>
+      </section>
+
+      <section class="sec">
+        <h2 class="sec-title">Skills</h2>
+        <div class="skill-group">
+          <p class="skill-label">Microsoft</p>
+          <div class="skill-row">
+            <span class="chip">Active Directory</span><span class="chip">Exchange</span>
+            <span class="chip">Windows Server</span><span class="chip">Azure</span><span class="chip">Copilot</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <p class="skill-label">Networking</p>
+          <div class="skill-row">
+            <span class="chip">Cisco</span><span class="chip">Aruba</span>
+            <span class="chip">VLANs</span><span class="chip">IP Telephony</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <p class="skill-label">AI &amp; Development</p>
+          <div class="skill-row">
+            <span class="chip">Claude</span><span class="chip">ChatGPT</span><span class="chip">Gemini</span>
+            <span class="chip">n8n</span><span class="chip">Google Cloud</span><span class="chip">HTML/CSS/JS</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <p class="skill-label">Creative</p>
+          <div class="skill-row">
+            <span class="chip">Photoshop</span><span class="chip">Illustrator</span><span class="chip">Premiere Pro</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+
+  <template id="__bundler_thumbnail" data-bg-color="#e7e3da">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="800" fill="#faf8f3"/>
+      <rect x="120" y="110" width="960" height="6" fill="#1a1814"/>
+      <text x="150" y="270" font-family="Georgia, serif" font-size="110" fill="#1a1814">Dennis <tspan font-style="italic" fill="#9a7b3f">Patty</tspan></text>
+      <rect x="150" y="360" width="520" height="10" rx="5" fill="#ddd8cd"/>
+      <rect x="150" y="410" width="640" height="10" rx="5" fill="#ddd8cd"/>
+      <rect x="150" y="460" width="420" height="10" rx="5" fill="#ddd8cd"/>
+    </svg>
+  </template>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>
